@@ -3,21 +3,32 @@
   --card: #111d2e;
   --text: #e8f0f7;
   --muted: #9fb4c7;
+  /* Brand / trust: azzurro (coerente con pronto intervento idraulico, siti tecnici) */
   --accent: #02adea;
   --accent2: #0195c9;
+  /* CTA urgenza: rosso (massima attenzione su “Chiama” — comune su servizi emergenza) */
+  --cta: #d92a2a;
+  --cta-hover: #b32121;
+  --wa: #25d366;
+  --wa-hover: #1eb959;
   --border: rgba(2, 173, 234, 0.25);
   --radius: 12px;
   --max: 1100px;
+  --sticky-h: 4.25rem;
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 body {
   margin: 0;
+  padding-bottom: var(--sticky-h);
   font-family: "DM Sans", system-ui, sans-serif;
   background: var(--bg);
   color: var(--text);
   line-height: 1.6;
+}
+@media (min-width: 1100px) {
+  body { padding-bottom: 0; }
 }
 a { color: var(--accent); }
 .wrap { width: 100%; max-width: var(--max); margin: 0 auto; padding: 0 1.25rem; }
@@ -29,9 +40,31 @@ a { color: var(--accent); }
   border-bottom: 1px solid var(--border);
 }
 .top-inner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.65rem 0; position: relative; }
-.brand { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; color: var(--text); }
-.brand img { width: 52px; height: 52px; border-radius: 10px; }
-.brand span { font-weight: 700; font-size: 1.05rem; letter-spacing: -0.02em; }
+.brand { display: flex; align-items: center; gap: 0.85rem; text-decoration: none; color: var(--text); }
+.brand-logo {
+  width: 64px; height: 64px; border-radius: 12px; flex-shrink: 0;
+  object-fit: contain;
+  background: rgba(2, 173, 234, 0.08);
+  box-shadow: 0 0 0 1px var(--border), 0 6px 24px rgba(2, 173, 234, 0.12);
+}
+.brand-lockup { display: flex; flex-direction: column; line-height: 1.15; }
+.brand-line1 { font-weight: 800; font-size: 1.2rem; letter-spacing: -0.03em; color: var(--text); }
+.brand-line1 .h24 {
+  color: var(--accent);
+  font-size: 1.4rem;
+  font-weight: 900;
+  margin-left: 0.1rem;
+  text-shadow: 0 0 28px rgba(2, 173, 234, 0.35);
+}
+.brand-line1 .h-sub { color: var(--accent); font-weight: 800; font-size: 0.88em; }
+.brand-line2 {
+  font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted);
+  margin-top: 0.2rem; max-width: 14rem;
+}
+@media (max-width: 400px) {
+  .brand-line2 { display: none; }
+  .brand-line1 { font-size: 1.05rem; }
+}
 nav ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem 1.1rem; align-items: center; }
 nav a { color: var(--text); text-decoration: none; font-size: 0.95rem; font-weight: 500; }
 nav a:hover { color: var(--accent); }
@@ -56,8 +89,26 @@ nav a.is-current { color: var(--accent); font-weight: 700; }
   text-decoration: none; border: none; cursor: pointer; transition: background 0.2s, transform 0.15s;
 }
 .btn:active { transform: scale(0.98); }
-.btn-primary { background: var(--accent); color: #fff; }
-.btn-primary:hover { background: var(--accent2); color: #fff; }
+/* Azioni principali: chiamata = rosso */
+.btn-primary,
+.btn-cta {
+  background: var(--cta);
+  color: #fff;
+  box-shadow: 0 4px 18px rgba(217, 42, 42, 0.35);
+  font-size: 1rem;
+  padding: 0.7rem 1.15rem;
+}
+.btn-primary:hover,
+.btn-cta:hover { background: var(--cta-hover); color: #fff; }
+/* WhatsApp riconoscibile */
+.btn-wa {
+  background: var(--wa);
+  color: #fff;
+  box-shadow: 0 4px 18px rgba(37, 211, 102, 0.25);
+  font-size: 1rem;
+  padding: 0.7rem 1.15rem;
+}
+.btn-wa:hover { background: var(--wa-hover); color: #fff; }
 .btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border); }
 .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
 
@@ -73,9 +124,34 @@ nav a.is-current { color: var(--accent); font-weight: 700; }
   min-height: 38vh; padding: 2rem 0 2.25rem;
 }
 .hero h1 { font-size: clamp(1.65rem, 3.5vw, 2.35rem); font-weight: 700; margin: 0 0 0.75rem; line-height: 1.2; }
+.h-title-accent { color: var(--accent); }
+.hero-badge {
+  display: inline-block; margin: 0 0 0.75rem; padding: 0.3rem 0.65rem; border-radius: 999px;
+  font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--accent); background: rgba(2, 173, 234, 0.12); border: 1px solid var(--border);
+}
 .hero .eyebrow { margin: 0 0 0.35rem; }
-.hero .lead { font-size: 1.05rem; color: var(--muted); max-width: 40rem; margin: 0 0 1.25rem; }
-.hero-ctas { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.hero .lead { font-size: 1.08rem; color: var(--muted); max-width: 40rem; margin: 0 0 0.9rem; }
+.trust-line {
+  font-size: 0.92rem; color: #c5d4e0; max-width: 40rem; margin: 0 0 1.5rem; padding-left: 0.85rem; border-left: 3px solid var(--accent);
+}
+.hero-ctas { display: flex; flex-wrap: wrap; gap: 0.85rem; align-items: center; }
+.hero-ctas .btn-cta { min-width: min(100%, 280px); justify-content: center; }
+.hero-ctas .btn-wa { min-width: min(100%, 260px); justify-content: center; }
+
+/* Barra fissa: solo mobile / tablet = più spazio per scroll senza coprire CTA in basso su desktop */
+.sticky-cta {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 99;
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; align-items: center;
+  padding: 0.55rem 0.75rem;
+  background: linear-gradient(180deg, rgba(7, 13, 20, 0.92) 0%, #070d14 100%);
+  border-top: 1px solid var(--border);
+  box-shadow: 0 -6px 30px rgba(0, 0, 0, 0.45);
+}
+.sticky-cta .btn-cta, .sticky-cta .btn-wa {
+  padding: 0.55rem 0.9rem; font-size: 0.88rem; flex: 1 1 auto; min-width: 0; max-width: 12rem; justify-content: center;
+}
+@media (min-width: 1100px) { .sticky-cta { display: none; } }
 
 .intro { padding: 2.25rem 0; background: var(--card); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 .intro p { margin: 0; max-width: 52rem; color: var(--muted); }
